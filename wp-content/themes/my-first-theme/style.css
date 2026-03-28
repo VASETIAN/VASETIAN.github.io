@@ -1,0 +1,276 @@
+/*
+Theme Name: My Pro Dark Theme Final V44 (Add Red Icon)
+Author: Me
+Version: 44.0
+*/
+
+/* ================== 1. 变量定义 (配色) ================== */
+:root {
+    --bg-body: #101014;       /* 深色背景 */
+    --bg-sidebar: #18181c;    /* 侧边栏/Dock背景 */
+    --bg-card: #1e1e24;       /* 卡片背景 */
+    --bg-hover: #2a2a32;      /* 悬停色 */
+    --text-main: #e0e0e0;     /* 主文字 */
+    --text-muted: #8b8b95;    /* 次文字 */
+    --border: #2b2b30;        /* 边框 */
+    --accent: #4d96ff;        /* 提亮蓝 */
+    --shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+body.light-mode {
+    --bg-body: #f0f2f5;
+    --bg-sidebar: #ffffff;
+    --bg-card: #ffffff;
+    --bg-hover: #f7f7f7;
+    --text-main: #333333;
+    --text-muted: #666666;
+    --border: #e1e4e8;
+    --accent: #007bff;
+    --shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* ================== 2. 基础重置 ================== */
+* { box-sizing: border-box; }
+body {
+    margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--bg-body); color: var(--text-main);
+    transition: background-color 0.3s, color 0.3s;
+    padding-bottom: 120px; 
+}
+a { color: inherit; text-decoration: none; transition: 0.2s; }
+img { max-width: 100%; display: block; }
+ul { padding: 0; margin: 0; list-style: none; }
+
+/* ================== 3. 全局布局 Grid ================== */
+.site-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 30px;
+    max-width: 1300px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 0 20px;
+}
+
+@media (max-width: 900px) {
+    .site-wrapper { 
+        grid-template-columns: 1fr; 
+        padding: 0 15px;
+    }
+    .right-sidebar { display: none; }
+}
+
+/* ================== 4. 底部悬浮 Dock (Apple Style 修复版) ================== */
+.bottom-dock {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    background: rgba(30, 30, 36, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    padding: 12px 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    display: flex; align-items: center; gap: 20px;
+    transition: all 0.3s ease;
+}
+
+body.light-mode .bottom-dock {
+    background: rgba(255, 255, 255, 0.65);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.dock-item {
+    display: flex; align-items: center; justify-content: center;
+    width: 48px; height: 48px; border-radius: 12px;
+    color: var(--text-muted); font-size: 24px;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative; text-decoration: none;
+    transform: translateY(0);
+}
+
+.dock-item.active {
+    color: var(--accent);
+    background-color: var(--bg-hover);
+    transform: translateY(0);
+}
+
+.dock-item:hover {
+    color: var(--accent);
+    background-color: var(--bg-hover);
+    transform: translateY(-8px) scale(1.1);
+}
+
+.dock-avatar img { width: 44px; height: 44px; border-radius: 50%; border: 2px solid transparent; transition: 0.2s; }
+.dock-avatar:hover img { border-color: var(--accent); transform: rotate(10deg); }
+.dock-theme-btn { background: none; border: none; cursor: pointer; padding: 0; }
+
+@media (max-width: 600px) {
+    .bottom-dock { bottom: 20px; padding: 10px 20px; gap: 15px; width: 90%; max-width: 380px; justify-content: space-between; }
+    .dock-item { width: 40px; height: 40px; font-size: 20px; }
+    .dock-avatar img { width: 36px; height: 36px; }
+}
+
+/* ================== 5. 主内容区域 ================== */
+.main-content { padding: 40px 0; width: 100%; min-width: 0; }
+
+.page-header-banner {
+    position: relative;
+    background-image: url('https://picsum.photos/id/1036/1200/400');
+    background-size: cover; background-position: center;
+    border-radius: 20px; overflow: hidden; margin-bottom: 40px;
+    display: flex; align-items: flex-end; justify-content: flex-start;
+    min-height: 260px; padding: 40px;
+    box-shadow: var(--shadow);
+}
+.page-header-banner::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); z-index: 1;
+}
+.content-header { position: relative; z-index: 2; width: 100%; text-align: left; margin-bottom: 0; }
+.site-desc {
+    font-size: 2.2rem; color: #ffffff; font-weight: 700;
+    font-style: italic; margin: 0; letter-spacing: 1px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.6);
+}
+
+.posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+.post-card {
+    background-color: var(--bg-card); border-radius: 16px; 
+    overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); 
+    transition: transform 0.2s; display: flex; flex-direction: column;
+}
+.post-card:hover { transform: translateY(-5px); }
+.post-card-link { display: flex; flex-direction: column; height: 100%; color: inherit; }
+.post-thumb-wrapper { position: relative; height: 180px; width: 100%; overflow: hidden; flex-shrink: 0; }
+.post-thumb-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+.post-card:hover .post-thumb-wrapper img { transform: scale(1.05); }
+.post-card-title-overlay {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 40px 20px 15px 20px;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+    pointer-events: none;
+}
+.post-title { margin: 0; font-size: 1.1rem; line-height: 1.4; color: #fff !important; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+.post-card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
+.post-excerpt { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; flex-grow: 1; }
+.post-footer { margin-top: auto; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--text-muted); }
+.tag-item { background: rgba(77, 150, 255, 0.15); color: var(--accent); padding: 3px 10px; border-radius: 6px; font-weight: bold; }
+
+/* ================== 6. 右侧边栏 ================== */
+.right-sidebar { padding: 40px 0; max-width: 320px; justify-self: end; width: 100%; }
+.widget-box { background-color: var(--bg-card); padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+.widget-list li { padding: 10px 0; border-bottom: 1px solid var(--border); }
+.widget-list li:last-child { border: none; }
+.widget-list li a { font-size: 0.95rem; line-height: 1.5; display: block; }
+
+.func-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.func-item { background-color: var(--bg-body); border-radius: 12px; padding: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-decoration: none; color: var(--text-main); transition: 0.2s; }
+.func-item:hover { background-color: var(--bg-hover); transform: translateY(-2px); }
+.func-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; margin-bottom: 8px; color: #fff; }
+
+/* 颜色定义 */
+.bg-blue { background: linear-gradient(135deg, #4d96ff, #6aaeff); }
+.bg-purple { background: linear-gradient(135deg, #a461ff, #c38fff); }
+.bg-green { background: linear-gradient(135deg, #00d2ff, #3a7bd5); }
+.bg-gray { background: linear-gradient(135deg, #666, #888); }
+.bg-red { background: linear-gradient(135deg, #ff416c, #ff4b2b); } /* 新增红色 */
+
+/* ================== 7. 空间瀑布流 (Space) ================== */
+.space-banner { position: relative; margin-bottom: 40px; height: 280px; }
+.space-user-content { position: absolute; bottom: 20px; right: 40px; z-index: 2; text-align: right; }
+.space-name { font-size: 2rem; color: #fff; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+
+.status-grid { display: block; column-count: 2; column-gap: 20px; }
+@media (max-width: 768px) { .status-grid { column-count: 1; } }
+
+.status-card { 
+    background-color: var(--bg-card); /* 确保这里引用了变量 */
+    border: 1px solid var(--border); 
+    border-radius: 12px; 
+    padding: 20px; 
+    margin-bottom: 20px; 
+    display: inline-block; 
+    width: 100%; 
+    break-inside: avoid; 
+    transition: transform 0.2s; 
+    box-shadow: var(--shadow); 
+}
+/* 强制深色模式下卡片颜色正确 (兜底方案) */
+body:not(.light-mode) .status-card {
+    background-color: #1e1e24; 
+    color: #e0e0e0;
+}
+
+.status-card:hover { transform: translateY(-3px); }
+.status-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
+.status-avatar img { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border); }
+.status-meta { display: flex; flex-direction: column; }
+.status-author { font-size: 0.95rem; font-weight: bold; color: var(--text-main); }
+.status-date { font-size: 0.75rem; color: var(--text-muted); }
+.status-thumb { display: block; margin-bottom: 15px; overflow: hidden; border-radius: 8px; }
+.status-thumb img { width: 100%; height: auto; display: block; transition: transform 0.2s; }
+.status-thumb:hover img { transform: scale(1.03); }
+.status-body-text { margin-bottom: 15px; }
+.status-title { font-size: 1.1rem; margin: 0 0 8px 0; line-height: 1.4; color: var(--text-main); }
+.status-excerpt { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; }
+
+/* ================== 8. AI 助手 & 杂项 ================== */
+.ai-widget-container { display: flex; flex-direction: column; height: 500px; background-color: var(--bg-card); border-radius: 0 0 12px 12px; }
+.ai-chat-history { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; background-color: var(--bg-card); scrollbar-width: thin; scrollbar-color: var(--bg-hover) transparent; }
+.ai-chat-history::-webkit-scrollbar { width: 4px; }
+.chat-msg { display: flex; align-items: flex-start; gap: 8px; font-size: 0.9rem; line-height: 1.6; width: 100%; }
+.ai-msg { align-self: flex-start; }
+.ai-msg .msg-avatar { width: 28px; height: 28px; background: linear-gradient(135deg, #4d96ff, #6aaeff); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; flex-shrink: 0; margin-top: 2px; }
+.ai-msg .msg-bubble { background-color: var(--bg-body); color: var(--text-main); border: 1px solid var(--border); border-radius: 0 12px 12px 12px; padding: 10px 12px; }
+.user-msg { flex-direction: row-reverse; align-self: flex-end; }
+.user-msg .msg-bubble { background-color: var(--accent); color: white; padding: 10px 14px; border-radius: 12px 0 12px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+.ai-input-wrapper { padding: 10px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 8px; background-color: var(--bg-card); }
+#ai-input { flex: 1; background-color: var(--bg-body) !important; border: 1px solid var(--border) !important; border-radius: 20px !important; padding: 8px 12px !important; color: var(--text-main) !important; font-size: 0.9rem !important; outline: none; transition: border-color 0.2s; }
+#ai-input:focus { border-color: var(--accent) !important; }
+#ai-send-btn { width: 36px; height: 36px; background-color: var(--accent); color: white; border: none; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; }
+#ai-send-btn:hover { opacity: 0.9; transform: scale(1.05); }
+
+.steam-games-grid, .about-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; width: 100%; }
+.game-card, .contact-card { background-color: var(--bg-card); border-radius: 12px; overflow: hidden; border: 1px solid var(--border); transition: transform 0.2s; box-shadow: var(--shadow); }
+.game-card:hover, .contact-card:hover { transform: translateY(-5px); }
+.game-cover { position: relative; width: 100%; aspect-ratio: 2 / 3; }
+.game-cover img { width: 100%; height: 100%; object-fit: cover; }
+.game-overlay { position: absolute; top:0;left:0;right:0;bottom:0; background:rgba(0,0,0,0.7); display:flex; align-items:center; justify-content:center; opacity:0; transition:0.3s; }
+.game-card:hover .game-overlay { opacity: 1; }
+.play-btn { color:#fff; border:1px solid #fff; padding:8px 16px; border-radius:20px; font-size:0.9rem; }
+.play-btn:hover { background:#fff; color:#000; }
+.game-info { padding: 12px; text-align: center; }
+.game-title { margin:0 0 5px 0; font-size:0.95rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color: var(--text-main); }
+.game-hours { font-size:0.8rem; color:var(--text-muted); }
+
+.contact-card { padding: 25px; display: flex; align-items: center; gap: 20px; text-decoration: none; }
+.contact-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #fff; flex-shrink: 0; }
+.contact-info h3 { margin: 0 0 5px 0; font-size: 1.1rem; color: var(--text-main); font-weight: bold; }
+.contact-info p { margin: 0; font-size: 0.85rem; color: var(--text-muted); }
+.wechat-card .contact-icon { background: linear-gradient(135deg, #07c160, #05a350); }
+.qq-card .contact-icon { background: linear-gradient(135deg, #12b7f5, #0a9bd6); }
+.email-card .contact-icon { background: linear-gradient(135deg, #ffc107, #ff9800); }
+.x-card .contact-icon { background: linear-gradient(135deg, #000000, #333333); }
+.qr-overlay { position: absolute; top:0;left:0;right:0;bottom:0; background:rgba(0,0,0,0.85); display:flex; align-items:center; justify-content:center; opacity:0; transition:0.3s; z-index:10; }
+.qr-overlay img { width: 120px; height: 120px; border-radius: 8px; border: 2px solid #fff; }
+.wechat-card:hover .qr-overlay { opacity: 1; }
+
+.comments-header-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+.comment-list li { background:var(--bg-card); padding:20px; border-radius:12px; margin-bottom:20px; border:1px solid var(--border); box-shadow:var(--shadow); }
+.comment-card-wrapper { display:flex; gap:15px; }
+.comment-avatar img { width:48px; height:48px; border-radius:50%; border: 2px solid var(--bg-hover); }
+.comment-content-area { flex:1; }
+.comment-text { font-size:0.95rem; line-height:1.6; color:var(--text-main); }
+.search-form-styled { position: relative; width: 100%; }
+.search-form-styled .search-icon { position: absolute; left: 0; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 1.2rem; }
+.search-form-styled input { width: 100%; background: transparent; border: none; color: var(--text-main); padding: 10px 10px 10px 30px; font-size: 1rem; outline: none; border-bottom: 1px solid transparent; transition: border-color 0.3s; }
+.search-form-styled input:focus { border-bottom: 1px solid var(--accent); }
+.weather-card { padding: 20px; background-color: var(--bg-card); border-radius: 12px; color: var(--text-main); border: 1px solid var(--border); box-shadow: var(--shadow); }
+.weather-title { margin: 0 0 15px 0; font-size: 1rem; font-weight: bold; color: var(--accent); display: flex; align-items: center; gap: 8px; }
+.temp { display: flex; align-items: center; font-size: 2.5rem; font-weight: bold; color: var(--text-main); }
+.temp img { width: 60px; height: 60px; margin-right: 5px; }
